@@ -2,11 +2,15 @@
 DROP TABLE IF EXISTS `feedback`;
 CREATE TABLE `feedback` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `contact` varchar(100) DEFAULT NULL,
-  `feedback` varchar(500) DEFAULT NULL,
-  `version` varchar(20) DEFAULT NULL,
+  `feedback` varchar(500) DEFAULT NULL default charset=utf8,
+  `contact` varchar(100) DEFAULT NULL default charset=utf8,
   `adopt` enum('0','1') DEFAULT '0',
+  `userid` varchar(20) DEFAULT NULL,
+  `version` varchar(20) DEFAULT NULL,
+  `device` varchar(100) DEFAULT NULL,
   `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-) ;
+  PRIMARY KEY (`id`)
 
+) 
+
+INSERT INTO feedback (`feedback`,`contact`,`userid`) VALUES ('反馈测试111','18715672831','12');
