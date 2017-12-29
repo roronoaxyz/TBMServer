@@ -39,8 +39,8 @@ class Feedback extends CI_Controller
     function select()
     {
         $adopt = require_post('adopt');
-        $pageat = require_post('pageat');
-        $result = self::feedbackList($adopt, $pageat);
+        $page_no = require_post('page_no');
+        $result = self::feedbackList($adopt, $page_no);
         
         try {
             if (empty($result)) {
@@ -48,7 +48,7 @@ class Feedback extends CI_Controller
             }
             
             foreach ($result as $k => $v) {
-                $data[$k]['id'] = intval($v['id']);
+                $data[$k]['feedbackId'] = intval($v['id']);
                 $data[$k]['feedback'] = $v['feedback'];
                 $data[$k]['contact'] = $v['contact'];
                 $data[$k]['adopt'] = intval($v['adopt']);
@@ -100,7 +100,7 @@ class Feedback extends CI_Controller
     {
         try {
             $update_data['adopt'] = 1;
-            $where['id'] = require_post('id');
+            $where['id'] = require_post('feedbackId');
             $sql = $this->db->update_string('feedback', $update_data, $where);
             $this->db->query($sql);
             if ($this->db->affected_rows() < 1)
@@ -120,7 +120,7 @@ class Feedback extends CI_Controller
     function delete()
     {
         try {
-            $this->db->where('id', require_post('id'));
+            $this->db->where('id', require_post('feedbackId'));
             $this->db->delete('feedback');
             if ($this->db->affected_rows() < 1)
                 throw new Exception('采纳反馈失败!');
@@ -136,11 +136,11 @@ class Feedback extends CI_Controller
     }
 
     /* 获取所有反馈 是否采纳 */
-    private function feedbackList($adopt = 0, $pageat = 1)
+    private function feedbackList($adopt = 0, $page_no = 1)
     {
         $where['adopt'] = $adopt;
         $result = $this->db->where($where)
-            ->get('feedback', 20, $pageat)
+        ->get('feedback', 20, $page_no)
             ->result_array();
         return $result;
     }
