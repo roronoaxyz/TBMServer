@@ -1,4 +1,4 @@
-#
+#反馈表格
 DROP TABLE IF EXISTS `feedback`;
 CREATE TABLE `feedback` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -12,4 +12,16 @@ CREATE TABLE `feedback` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
+#模拟插入一个反馈
 INSERT INTO feedback (`feedback`,`contact`,`userid`) VALUES ('反馈测试111','18715672831','12');
+
+#帮助表格
+DROP TABLE IF EXISTS `assist`;
+CREATE TABLE `assist` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `content` varchar(500) DEFAULT NULL,
+  `remark` varchar(100) DEFAULT NULL,
+  `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
