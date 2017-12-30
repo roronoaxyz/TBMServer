@@ -38,7 +38,7 @@ class Feedback extends CI_Controller
     /* 获取所有未采纳的 */
     function select()
     {
-        $adopt = require_get('adopt');
+    	$adopt = option_get('adopt');
         $page_no = require_get('page_no');
         $result = self::feedbackList($adopt, $page_no);
         
@@ -75,9 +75,17 @@ class Feedback extends CI_Controller
     {
         try {
             $feedback = require_get('feedback');
-            $contact = require_get('contact');
+            $contact = option_get('contact');
+            $nickname = option_get('nickname');
+            $version = require_get('version');
+            $user_id = option_get('user_id');
+           
             $insert_data['feedback'] = $feedback;
             $insert_data['contact'] = $contact;
+            $insert_data['nickname'] = $nickname;
+            $insert_data['version'] = $version;
+            $insert_data['userid'] = $user_id;
+            
             $insert_sql = $this->db->insert_string('feedback', $insert_data);
             $insert_sql = str_replace('INSERT', 'INSERT IGNORE', $insert_sql);
             $this->db->query($insert_sql);
@@ -86,7 +94,7 @@ class Feedback extends CI_Controller
             
             // 成功
             $response['code'] = 1;
-            $response['msg'] = 'success';
+            $response['msg'] = '感谢您对我们的产品提供宝贵意见！';
         } catch (Exception $e) {
             
             $response['code'] = 0;
