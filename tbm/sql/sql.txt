@@ -4,6 +4,7 @@ CREATE TABLE `feedback` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `feedback` varchar(500) DEFAULT NULL,
   `contact` varchar(100) DEFAULT NULL,
+  `nickname` varchar(50) DEFAULT NULL,
   `adopt` enum('0','1') DEFAULT '0',
   `userid` varchar(20) DEFAULT NULL,
   `version` varchar(20) DEFAULT NULL,

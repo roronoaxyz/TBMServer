@@ -38,8 +38,8 @@ class Feedback extends CI_Controller
     /* 获取所有未采纳的 */
     function select()
     {
-        $adopt = require_post('adopt');
-        $page_no = require_post('page_no');
+        $adopt = require_get('adopt');
+        $page_no = require_get('page_no');
         $result = self::feedbackList($adopt, $page_no);
         
         try {
@@ -74,8 +74,8 @@ class Feedback extends CI_Controller
     public function add()
     {
         try {
-            $feedback = require_post('feedback');
-            $contact = require_post('contact');
+            $feedback = require_get('feedback');
+            $contact = require_get('contact');
             $insert_data['feedback'] = $feedback;
             $insert_data['contact'] = $contact;
             $insert_sql = $this->db->insert_string('feedback', $insert_data);
@@ -100,7 +100,7 @@ class Feedback extends CI_Controller
     {
         try {
             $update_data['adopt'] = 1;
-            $where['id'] = require_post('feedbackId');
+            $where['id'] = require_get('feedbackId');
             $sql = $this->db->update_string('feedback', $update_data, $where);
             $this->db->query($sql);
             if ($this->db->affected_rows() < 1)
@@ -120,7 +120,7 @@ class Feedback extends CI_Controller
     function delete()
     {
         try {
-            $this->db->where('id', require_post('feedbackId'));
+            $this->db->where('id', require_get('feedbackId'));
             $this->db->delete('feedback');
             if ($this->db->affected_rows() < 1)
                 throw new Exception('采纳反馈失败!');
