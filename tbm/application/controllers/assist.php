@@ -67,6 +67,85 @@ class Assist extends CI_Controller
     	$this->response = & $response;
     }
     
+    /* 添加帮助 */
+    public function add()
+    {
+        try {
+            $title = require_get('title');
+            $content = require_get('content');
+            $remark = option_get('remark');
+            
+            $insert_data['title'] = $title;
+            $insert_data['content'] = $content;
+            $insert_data['remark'] = $remark;
+            
+            $insert_sql = $this->db->insert_string('assist', $insert_data);
+            $insert_sql = str_replace('INSERT', 'INSERT IGNORE', $insert_sql);
+            $this->db->query($insert_sql);
+            if ($this->db->affected_rows() < 1)
+                throw new Exception('插入数据失败!请联系管理员!');
+                
+                // 成功
+                $response['code'] = 1;
+                $response['msg'] = '插入数据成功！';
+        } catch (Exception $e) {
+            
+            $response['code'] = 0;
+            $response['msg'] = $e->getMessage();
+        }
+        $this->response = & $response;
+    }
+    
+    /* 添加帮助 */
+    public function update()
+    {
+        try {
+            $assistId = require_get('assistId');
+            $title = require_get('title');
+            $content = require_get('content');
+            $remark = option_get('remark');
+            
+            $update_data['title'] = $title;
+            $update_data['content'] = $content;
+            $update_data['remark'] = $remark;
+            
+            $this->db->update('assist', $update_data, array("id" => $assistId));
+            
+            if ($this->db->affected_rows() < 1)
+                throw new Exception('修改数据失败!请联系管理员!');
+                
+                // 成功
+                $response['code'] = 1;
+                $response['msg'] = '修改数据成功！';
+        } catch (Exception $e) {
+            
+            $response['code'] = 0;
+            $response['msg'] = $e->getMessage();
+        }
+        $this->response = & $response;
+    }
+    
+    /* 删除帮助 */
+    public function remove()
+    {
+        try {
+            $assistId = require_get('assistId');
+            
+            $this->db->delete('assist', array("id" => $assistId));
+            if ($this->db->affected_rows() < 1)
+                throw new Exception('删除数据失败!请联系管理员!');
+                
+                // 成功
+                $response['code'] = 1;
+                $response['msg'] = '删除数据成功！';
+        } catch (Exception $e) {
+            
+            $response['code'] = 0;
+            $response['msg'] = $e->getMessage();
+        }
+        $this->response = & $response;
+    }
+    
     
     /* 帮助信息 */
     private function assistList($page_no = 0)

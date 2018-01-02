@@ -36,7 +36,7 @@ class Feedback extends CI_Controller
     }
 
     /* 获取所有未采纳的 */
-    function select()
+    function list()
     {
     	$adopt = option_get('adopt');
         $page_no = require_get('page_no');
@@ -44,7 +44,7 @@ class Feedback extends CI_Controller
         
         try {
             if (empty($result)) {
-                throw new Exception('没有数据了!!');
+                throw new Exception('没有反馈数据!!');
             }
             
             foreach ($result as $k => $v) {
@@ -53,8 +53,8 @@ class Feedback extends CI_Controller
                 $data[$k]['contact'] = $v['contact'];
                 $data[$k]['adopt'] = intval($v['adopt']);
                 $data[$k]['userid'] = $v['userid'];
+                $data[$k]['nickname'] = $v['nickname'];
                 $data[$k]['version'] = $v['version'];
-                $data[$k]['device'] = $v['device'];
                 $data[$k]['create_date'] = $v['create_date'];
             }
             
@@ -107,7 +107,7 @@ class Feedback extends CI_Controller
     function adopt()
     {
         try {
-            $update_data['adopt'] = 1;
+            $update_data['adopt'] = '1';
             $where['id'] = require_get('feedbackId');
             $sql = $this->db->update_string('feedback', $update_data, $where);
             $this->db->query($sql);
@@ -115,7 +115,7 @@ class Feedback extends CI_Controller
                 throw new Exception('采纳反馈失败!');
             
             $response['code'] = 1;
-            $response['msg'] = 'success';
+            $response['msg'] = '采纳反馈成功';
         } catch (Exception $e) {
             
             $response['code'] = 0;
@@ -125,16 +125,19 @@ class Feedback extends CI_Controller
     }
 
     /* 删除反馈 */
-    function delete()
+    function remove()
     {
         try {
-            $this->db->where('id', require_get('feedbackId'));
-            $this->db->delete('feedback');
+            //不是物理删除 而是把状态置位2
+            $update_data['adopt'] = '2';
+            $where['id'] = require_get('feedbackId');
+            $sql = $this->db->update_string('feedback', $update_data, $where);
+            $this->db->query($sql);
             if ($this->db->affected_rows() < 1)
-                throw new Exception('采纳反馈失败!');
-            
-            $response['code'] = 1;
-            $response['msg'] = 'success';
+                throw new Exception('删除反馈失败!');
+                
+                $response['code'] = 1;
+                $response['msg'] = '删除反馈成功';
         } catch (Exception $e) {
             
             $response['code'] = 0;
@@ -146,6 +149,8 @@ class Feedback extends CI_Controller
     /* 获取所有反馈 是否采纳 */
     private function feedbackList($adopt = 0, $page_no = 1)
     {
+        $page_no = $page_no - 1;		//前段页码从1开始
+        $page_no = max(0, $page_no);
         $where['adopt'] = $adopt;
         $result = $this->db->where($where)
         ->get('feedback', 20, $page_no)

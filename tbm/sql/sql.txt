@@ -2,14 +2,13 @@
 DROP TABLE IF EXISTS `feedback`;
 CREATE TABLE `feedback` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `feedback` varchar(500) DEFAULT NULL,
-  `contact` varchar(100) DEFAULT NULL,
-  `nickname` varchar(50) DEFAULT NULL,
-  `adopt` enum('0','1') DEFAULT '0',
-  `userid` varchar(20) DEFAULT NULL,
-  `version` varchar(20) DEFAULT NULL,
-  `device` varchar(100) DEFAULT NULL,
-  `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `feedback` varchar(500) DEFAULT NULL COMMENT '反馈内容',
+  `contact` varchar(100) DEFAULT NULL COMMENT '联系方式',
+  `nickname` varchar(50) DEFAULT NULL COMMENT '联系人名字',
+  `adopt` enum('0','1', '2') DEFAULT '0' COMMENT '是否采纳  0.未读  1.采纳 2.未采纳/删除',
+  `userid` varchar(20) DEFAULT NULL COMMENT '用户id ',
+  `version` varchar(20) DEFAULT NULL COMMENT '版本号',
+  `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
@@ -20,9 +19,13 @@ INSERT INTO feedback (`feedback`,`contact`,`userid`) VALUES ('反馈测试111','
 DROP TABLE IF EXISTS `assist`;
 CREATE TABLE `assist` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) NOT NULL,
-  `content` varchar(500) DEFAULT NULL,
-  `remark` varchar(100) DEFAULT NULL,
-  `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `remark` varchar(100) DEFAULT NULL COMMENT '备注',
+  `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+
+#模拟插入一个帮助
+INSERT INTO assist (`title`,`content`,`remark`) VALUES ('这是一条帮助的标题','这是一条帮助的内容,这是一条帮助的内容,这是一条帮助的内容,这是一条帮助的内容,这是一条帮助的内容,这是一条帮助的内容,这是一条帮助的内容,','');

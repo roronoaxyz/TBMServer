@@ -8,6 +8,16 @@ function require_get($str) {
     }
 }
 
+//获取指定GET参数
+function option_get($str) {
+    if (isset($_GET[$str]) && $_GET[$str] != null) {
+        return htmlspecialchars($_GET[$str]);
+    } else {
+        return '';
+    }
+}
+
+
 //获取指定POST参数
 function require_post($str) {
     if (isset($_POST[$str]) && $_POST[$str] != null) {
